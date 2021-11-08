@@ -6,10 +6,10 @@ namespace Neptune.Models
     public class Table
     {
         public bool archived { get; set; }
-        [Timestamp]
-        public byte[] created { get; set; }
-        [Timestamp]
-        public byte[] updated { get; set; }
+        
+        public string created { get; set; }
+        
+        public string updated { get; set; }
 
     }
 }

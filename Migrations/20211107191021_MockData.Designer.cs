@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Neptune.Data;
 
 namespace Neptune.Migrations
 {
     [DbContext(typeof(DatabaseDbContext))]
-    partial class DatabaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211107191021_MockData")]
+    partial class MockData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,6 +28,8 @@ namespace Neptune.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("created")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("datatype")
@@ -38,6 +42,8 @@ namespace Neptune.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("updated")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -58,6 +64,8 @@ namespace Neptune.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("created")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("description")
@@ -70,6 +78,8 @@ namespace Neptune.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("updated")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -89,6 +99,8 @@ namespace Neptune.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("created")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("description")
@@ -101,6 +113,8 @@ namespace Neptune.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("updated")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("username")
@@ -122,6 +136,8 @@ namespace Neptune.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("created")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("display_name")
@@ -131,6 +147,8 @@ namespace Neptune.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("updated")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.HasKey("username");

@@ -23,7 +23,8 @@ namespace Neptune.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Script>>> GetScripts()
         {
-            return await _context.scripts.ToListAsync();
+            return await _context.scripts.Include(c => c.user)
+                                        .Include(d => d.parameter.Id).ToListAsync();
         }
 
         // GET: api/Scripts/5

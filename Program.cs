@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Neptune
 {
@@ -13,8 +14,10 @@ namespace Neptune
     {
         public static void Main(string[] args)
         {
+            //mock_data temp = new mock_data();
+            test t = new test();
             CreateHostBuilder(args).Build().Run();
-            mock_data temp = new mock_data();
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

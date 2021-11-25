@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "vUsTXFuuQPXppBQvr9qHeOF2F3JX0nFgIyC2RD+qPZm9jlN3dMLKIKINWmKK5k3UEqbTgewbK5+YCVdPPATNng==",
+  "dgSpecHash": "9A+QOBBN09mfOIEtBrwZvJ8+7ySJ4XjMwhlN8cnYzXnlBv+RhK45jUWc7REb7Q0FzCWiL4339BHoaW8MTbKfIA==",
   "success": true,
-  "projectFilePath": "C:\\Development\\Neptune\\Neptune_api\\Neptune.csproj",
+  "projectFilePath": "C:\\Users\\pi890\\Videos\\Neptune_api\\Neptune.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pi890\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\pi890\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.11\\microsoft.aspnetcore.jsonpatch.5.0.11.nupkg.sha512",
-    "C:\\Users\\pi890\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.11\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.11.nupkg.sha512",
+    "C:\\Users\\pi890\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.0.0\\microsoft.aspnetcore.jsonpatch.3.0.0.nupkg.sha512",
+    "C:\\Users\\pi890\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.0.0\\microsoft.aspnetcore.mvc.newtonsoftjson.3.0.0.nupkg.sha512",
     "C:\\Users\\pi890\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\pi890\\.nuget\\packages\\microsoft.data.sqlite.core\\5.0.11\\microsoft.data.sqlite.core.5.0.11.nupkg.sha512",
     "C:\\Users\\pi890\\.nuget\\packages\\microsoft.dotnet.platformabstractions\\3.1.6\\microsoft.dotnet.platformabstractions.3.1.6.nupkg.sha512",

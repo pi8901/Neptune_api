@@ -17,6 +17,8 @@ namespace Neptune
 
             Script script_a = new Script { archived = false, updated = date,
              created = date, title = "script_a", description = "This is script_a"};
+            Script script_b = new Script { archived = false, updated = date,
+             created = date, title = "script_b", description = "This is script_b"};
 
             Parameter param_1 = new Parameter { archived = false, updated = date,
              created = date, title = "param_a", description = "This is param_a", implemented = false };
@@ -30,11 +32,11 @@ namespace Neptune
              created = date, title = "param_e", description = "This is param_e", implemented = false };
 
             Option option_a = new Option { archived = false, updated = date,
-             created = date, title = "option_a", description = "This is option_a", datatype = 1  };
+             created = date, title = "option_a", description = "This is option_a", datatype = 0  };
             Option option_b = new Option { archived = false, updated = date,
              created = date, title = "option_b", description = "This is option_b", datatype = 1 };
             Option option_c = new Option { archived = false, updated = date,
-             created = date, title = "option_c", description = "This is option_c", datatype = 1 };
+             created = date, title = "option_c", description = "This is option_c", datatype = 2 };
 
             param_1.options.Add(option_a);
             param_2.options.Add(option_a);
@@ -42,24 +44,26 @@ namespace Neptune
             param_4.options.Add(option_c);
             param_5.options.Add(option_a);
 
-            option_a.parameter.Add(param_1);
-            option_a.parameter.Add(param_2);
-            option_a.parameter.Add(param_5);
 
-            option_b.parameter.Add(param_3);
-        	option_c.parameter.Add(param_4);
-
-            param_3.parameter.Add(param_4);
-            param_3.parameter.Add(param_5);
+            param_3.parameter_child.Add(param_4);
+            param_3.parameter_child.Add(param_5);
 
             script_a.parameter.Add(param_1);
             script_a.parameter.Add(param_2);
             script_a.parameter.Add(param_3);
             script_a.user = user_1;
 
+            script_b.parameter.Add(param_2);
+            script_b.parameter.Add(param_1);
+            script_b.parameter.Add(param_5);
+            script_b.user = user_1;
+
+
+
 
             context.Add(user_1);
             context.Add(script_a);
+            context.Add(script_b);
             context.Add(option_b);
             context.Add(option_c);
             context.Add(param_1);

@@ -23,15 +23,14 @@ namespace Neptune.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Script>>> GetScripts()
         {
-            return await _context.scripts.Include(c => c.user)
-                                        .Include(d => d.parameter).ToListAsync();
+            return await _context.scripts.Include(c => c.user).Include(d => d.parameter).ThenInclude(e => e.options).Include(d => d.parameter).ThenInclude(e => e.parameter_child).ToListAsync();
         }
 
         // GET: api/Scripts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Script>> GetScript(int id)
         {
-            var Script = await _context.scripts.FindAsync(id);
+            var Script = await _context.scripts.Include(b => b.parameter).Include(c => c.user).FirstOrDefaultAsync(c => c.Id == id);
 
             if (Script == null)
             {
@@ -51,7 +50,7 @@ namespace Neptune.Controllers
             {
                 return BadRequest();
             }
-
+            
             _context.Entry(Script).State = EntityState.Modified;
 
             try

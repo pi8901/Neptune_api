@@ -15,7 +15,7 @@ namespace Neptune
         public static void Main(string[] args)
         {
             //mock_data temp = new mock_data();
-            test t = new test();
+            //test t = new test();
             CreateHostBuilder(args).Build().Run();
             
         }

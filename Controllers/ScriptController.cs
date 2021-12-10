@@ -56,17 +56,12 @@ namespace Neptune.Controllers
                 param.Append(this._context.parameter.SingleOrDefault(a => a.Id == p.Id));
                 System.Console.WriteLine("Aray. " + param.Length);
             }
-
             var artist = this._context.scripts.AsNoTracking().Include(a => a.parameter)
                 .SingleOrDefault(a => a.Id == id);
 
-            artist.parameter.Clear();
-            System.Console.WriteLine("NR: " + script.parameter.Count);
-            foreach (Parameter p in param)
-            {
                 System.Console.WriteLine("Hello: " + p.title);
                 artist.parameter.Add(p);
-            }
+            
             
             try
             {

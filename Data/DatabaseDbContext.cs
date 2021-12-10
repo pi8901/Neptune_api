@@ -11,7 +11,7 @@ namespace Neptune.Data
         public DbSet<User> user {get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source=C:/Users/pi890/Videos/Neptune_api/neptune.db");
+            => options.UseSqlite($"Data Source=C:/Development/Neptune/Neptune_api/neptune.db");
     }
     
 }

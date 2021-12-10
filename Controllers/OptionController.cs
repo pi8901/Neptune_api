@@ -23,14 +23,14 @@ namespace Neptune.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Option>>> GetOptions()
         {
-            return await _context.options.ToListAsync();
+            return await _context.options.Include(c => c.parameter).ToListAsync();
         }
 
         // GET: api/Options/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Option>> GetOption(int id)
         {
-            var Option = await _context.options.FindAsync(id);
+            var Option = await _context.options.Include(c => c.parameter).FirstOrDefaultAsync(c => c.Id == id);
 
             if (Option == null)
             {

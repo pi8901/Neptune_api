@@ -23,15 +23,14 @@ namespace Neptune.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Script>>> GetScripts()
         {
-            return await _context.scripts.Include(c => c.user)
-                                        .Include(d => d.parameter).ToListAsync();
+            return await _context.scripts.Include(c => c.user).Include(d => d.parameter).ThenInclude(e => e.options).Include(d => d.parameter).ThenInclude(e => e.parameter_child).ToListAsync();
         }
 
         // GET: api/Scripts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Script>> GetScript(int id)
         {
-            var Script = await _context.scripts.FindAsync(id);
+            var Script = await _context.scripts.Include(b => b.parameter).Include(c => c.user).FirstOrDefaultAsync(c => c.Id == id);
 
             if (Script == null)
             {
@@ -45,15 +44,30 @@ namespace Neptune.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutScript(int id, Script Script)
+        public async Task<IActionResult> PutScript(int id, Script script)
         {
-            if (id != Script.Id)
+            //_context.Entry(script).State = EntityState.Modified;
+            //_context.AttachRange(script.parameter);
+            Parameter[] param = new Parameter[script.parameter.Count()];
+            param[0] = (this._context.parameter.SingleOrDefault(a => a.Id == script.parameter.ElementAt(0).Id));
+            foreach( Parameter p in script.parameter)
             {
-                return BadRequest();
+                System.Console.WriteLine("Damn: " +this._context.parameter.SingleOrDefault(a => a.Id == p.Id).title);
+                param.Append(this._context.parameter.SingleOrDefault(a => a.Id == p.Id));
+                System.Console.WriteLine("Aray. " + param.Length);
             }
 
-            _context.Entry(Script).State = EntityState.Modified;
+            var artist = this._context.scripts.AsNoTracking().Include(a => a.parameter)
+                .SingleOrDefault(a => a.Id == id);
 
+            artist.parameter.Clear();
+            System.Console.WriteLine("NR: " + script.parameter.Count);
+            foreach (Parameter p in param)
+            {
+                System.Console.WriteLine("Hello: " + p.title);
+                artist.parameter.Add(p);
+            }
+            
             try
             {
                 await _context.SaveChangesAsync();

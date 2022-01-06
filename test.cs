@@ -1,11 +1,8 @@
 using System;
-using System.Text;
 using Neptune.Models;
 using Neptune.Data;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Linq;
 
 namespace Neptune
 {
@@ -13,27 +10,19 @@ namespace Neptune
     {
         public test()
         {
-            
 
             DatabaseDbContext context = new DatabaseDbContext();
-
-            string jsonString = JsonSerializer.Serialize(context.scripts.ToListAsync());
-            Console.WriteLine(jsonString);
             Script s;
 
-            foreach (var script in context.scripts.Include(b => b.parameter).Include(c => c.user))
+            var x = context.scripts.Where(m => m.Id == 2).FirstOrDefault();
+            var z = context.scriptParameter.Where(m => m.script.Id == 2 && m.implemented == true).Include(m => m.parameter).ToList();
+            var t = context.scriptParameter.Where(m => m.script.Id == 2 && m.implemented == true).Select(m => m.parameter).ToList();
+            //var x = context.scripts.Where(m => m.Id == 1)
+
+            foreach (var y in t)
             {
-                Console.WriteLine(script.title);
-                s = script;
-                Console.WriteLine(s.user.display_name);
-                foreach (var parameter in script.parameter)
-                {
-                    Console.WriteLine(parameter.title);
-                }
-            }
-            var scripts = context.scripts.Include(b=> b.parameter);
-            //Script c =  scripts.FirstAsync();
-            
+                Console.WriteLine(y.title);
+            }  
         }
     }
 

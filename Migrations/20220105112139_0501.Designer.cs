@@ -9,8 +9,8 @@ using Neptune.Data;
 namespace Neptune.Migrations
 {
     [DbContext(typeof(DatabaseDbContext))]
-    [Migration("20211130134114_param")]
-    partial class param
+    [Migration("20220105112139_0501")]
+    partial class _0501
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,9 +53,6 @@ namespace Neptune.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ParameterId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("archived")
                         .HasColumnType("INTEGER");
 
@@ -65,9 +62,6 @@ namespace Neptune.Migrations
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("implemented")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("title")
                         .HasColumnType("TEXT");
 
@@ -75,8 +69,6 @@ namespace Neptune.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParameterId");
 
                     b.ToTable("parameter");
                 });
@@ -113,6 +105,39 @@ namespace Neptune.Migrations
                     b.HasIndex("username");
 
                     b.ToTable("scripts");
+                });
+
+            modelBuilder.Entity("Neptune.Models.ScriptParameter_link", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("archived")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("implemented")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("parameterId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("scriptId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("updated")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("parameterId");
+
+                    b.HasIndex("scriptId");
+
+                    b.ToTable("scriptParameter_link");
                 });
 
             modelBuilder.Entity("Neptune.Models.User", b =>
@@ -155,26 +180,19 @@ namespace Neptune.Migrations
                     b.ToTable("OptionParameter");
                 });
 
-            modelBuilder.Entity("ParameterScript", b =>
+            modelBuilder.Entity("ParameterParameter", b =>
                 {
-                    b.Property<int>("parameterId")
+                    b.Property<int>("parameter_childId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("scriptsId")
+                    b.Property<int>("parameter_parentId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("parameterId", "scriptsId");
+                    b.HasKey("parameter_childId", "parameter_parentId");
 
-                    b.HasIndex("scriptsId");
+                    b.HasIndex("parameter_parentId");
 
-                    b.ToTable("ParameterScript");
-                });
-
-            modelBuilder.Entity("Neptune.Models.Parameter", b =>
-                {
-                    b.HasOne("Neptune.Models.Parameter", null)
-                        .WithMany("parameter")
-                        .HasForeignKey("ParameterId");
+                    b.ToTable("ParameterParameter");
                 });
 
             modelBuilder.Entity("Neptune.Models.Script", b =>
@@ -184,6 +202,21 @@ namespace Neptune.Migrations
                         .HasForeignKey("username");
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("Neptune.Models.ScriptParameter_link", b =>
+                {
+                    b.HasOne("Neptune.Models.Parameter", "parameter")
+                        .WithMany("scriptParameter_parameter")
+                        .HasForeignKey("parameterId");
+
+                    b.HasOne("Neptune.Models.Script", "script")
+                        .WithMany("scriptParameter_script")
+                        .HasForeignKey("scriptId");
+
+                    b.Navigation("parameter");
+
+                    b.Navigation("script");
                 });
 
             modelBuilder.Entity("OptionParameter", b =>
@@ -201,24 +234,29 @@ namespace Neptune.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ParameterScript", b =>
+            modelBuilder.Entity("ParameterParameter", b =>
                 {
                     b.HasOne("Neptune.Models.Parameter", null)
                         .WithMany()
-                        .HasForeignKey("parameterId")
+                        .HasForeignKey("parameter_childId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Neptune.Models.Script", null)
+                    b.HasOne("Neptune.Models.Parameter", null)
                         .WithMany()
-                        .HasForeignKey("scriptsId")
+                        .HasForeignKey("parameter_parentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Neptune.Models.Parameter", b =>
                 {
-                    b.Navigation("parameter");
+                    b.Navigation("scriptParameter_parameter");
+                });
+
+            modelBuilder.Entity("Neptune.Models.Script", b =>
+                {
+                    b.Navigation("scriptParameter_script");
                 });
 #pragma warning restore 612, 618
         }

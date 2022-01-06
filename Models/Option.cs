@@ -12,5 +12,7 @@ namespace Neptune.Models
 
         public virtual ICollection<Parameter> parameter {get; set; }
         public int datatype { get; set; }
+
+        public string value { get; set; }
     }
 }

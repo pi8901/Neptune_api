@@ -21,66 +21,42 @@ namespace Neptune.Controllers
 
         // GET: api/Scripts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Script>>> GetScripts()
+        public async Task<ActionResult<IEnumerable<Parameter>>> GetParameters()
         {
-            return await _context.scripts.Include(c => c.user).Include(d => d.parameter).ThenInclude(e => e.options).Include(d => d.parameter).ThenInclude(e => e.parameter_child).ToListAsync();
+            var list =  await _context.scripts.ToListAsync();
+            var ret = new List<Script_vm>();
+            foreach (Script x in list)
+            {
+                var p = await GetScript(x.Id);
+                ret.Add(p);
+            }
+            return ret;
         }
+
 
         // GET: api/Scripts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Script>> GetScript(int id)
+        public async Task<ActionResult<Script_vm>> GetScript(int id)
         {
+            var x = new Script_vm();
             var Script = await _context.scripts.Include(b => b.parameter).Include(c => c.user).FirstOrDefaultAsync(c => c.Id == id);
+            x.Id = Script.Id;
+            x.title = Script.title;
+            x.user = Script.user;
+            x.description = Script.description;
+            x.type = Script.type;
+            x.parameter_available = await _context.scriptParameter.Where(m => m.script.Id == x.Id).Select(m => m.parameter).Include(m => m.parameter_child).ToListAsync();
+            x.parameter_implemented = await _context.scriptParameter.Where(m => m.script.Id == x.Id && m.implemented == true).Select(m => m.parameter).Include(m => m.parameter_child).ToListAsync();
 
             if (Script == null)
             {
                 return NotFound();
             }
 
-            return Script;
+            return x;
         }
 
-        // PUT: api/Scripts/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutScript(int id, Script script)
-        {
-            //_context.Entry(script).State = EntityState.Modified;
-            //_context.AttachRange(script.parameter);
-            Parameter[] param = new Parameter[script.parameter.Count()];
-            param[0] = (this._context.parameter.SingleOrDefault(a => a.Id == script.parameter.ElementAt(0).Id));
-            foreach( Parameter p in script.parameter)
-            {
-                System.Console.WriteLine("Damn: " +this._context.parameter.SingleOrDefault(a => a.Id == p.Id).title);
-                param.Append(this._context.parameter.SingleOrDefault(a => a.Id == p.Id));
-                System.Console.WriteLine("Aray. " + param.Length);
-            }
-            var artist = this._context.scripts.AsNoTracking().Include(a => a.parameter)
-                .SingleOrDefault(a => a.Id == id);
 
-                System.Console.WriteLine("Hello: " + p.title);
-                artist.parameter.Add(p);
-            
-            
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScriptExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Scripts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -88,6 +64,9 @@ namespace Neptune.Controllers
         [HttpPost]
         public async Task<ActionResult<Script>> PostScript(Script Script)
         {
+            System.Console.WriteLine("got to add");
+            User u = await this._context.user.FirstOrDefaultAsync();
+            Script.user = u;
             _context.scripts.Add(Script);
             await _context.SaveChangesAsync();
 

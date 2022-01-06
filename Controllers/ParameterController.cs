@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Neptune.Data;
 using Neptune.Models;
 
-namespace Neptune.Controllers
+/*namespace Neptune.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -105,4 +105,4 @@ namespace Neptune.Controllers
             return _context.parameter.Any(e => e.Id == id);
         }
     }
-}
+}*/

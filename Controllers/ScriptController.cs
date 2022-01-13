@@ -21,14 +21,21 @@ namespace Neptune.Controllers
 
         // GET: api/Scripts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Parameter>>> GetParameters()
+        public async Task<ActionResult<IEnumerable<Script_vm>>> GetScripts()
         {
-            var list =  await _context.scripts.ToListAsync();
+            var list =  await _context.scripts.Include(c => c.user).ToListAsync();
             var ret = new List<Script_vm>();
-            foreach (Script x in list)
+            foreach (Script Script in list)
             {
-                var p = await GetScript(x.Id);
-                ret.Add(p);
+                var x = new Script_vm();
+                x.Id = Script.Id;
+                x.title = Script.title;
+                x.user = Script.user;
+                x.description = Script.description;
+                x.type = Script.type;
+                x.parameter_available = await _context.scriptParameter.Where(m => m.script.Id == x.Id).Include(m => m.parameter.options).Include(m => m.parameter.parameter_child).Select(m => m.parameter).ToListAsync();
+                x.parameter_implemented = await _context.scriptParameter.Where(m => m.script.Id == x.Id && m.implemented == true).Include(m => m.parameter.options).Include(m => m.parameter.parameter_child).Select(m => m.parameter).ToListAsync();
+                ret.Add(x);
             }
             return ret;
         }
@@ -45,8 +52,8 @@ namespace Neptune.Controllers
             x.user = Script.user;
             x.description = Script.description;
             x.type = Script.type;
-            x.parameter_available = await _context.scriptParameter.Where(m => m.script.Id == x.Id).Select(m => m.parameter).Include(m => m.parameter_child).ToListAsync();
-            x.parameter_implemented = await _context.scriptParameter.Where(m => m.script.Id == x.Id && m.implemented == true).Select(m => m.parameter).Include(m => m.parameter_child).ToListAsync();
+            x.parameter_available = await _context.scriptParameter.Where(m => m.script.Id == x.Id).Select(m => m.parameter).ToListAsync();
+            x.parameter_implemented = await _context.scriptParameter.Where(m => m.script.Id == x.Id && m.implemented == true).Select(m => m.parameter).ToListAsync();
 
             if (Script == null)
             {
@@ -56,7 +63,47 @@ namespace Neptune.Controllers
             return x;
         }
 
+        // PUT: api/Parameters/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutScript(int id, Script_vm Script)
+        {
+            System.Console.WriteLine("Got Here");
+            if (id != Script.Id)
+            {
+                return BadRequest();
+            }
+            Script s = _context.scripts.Where(d => d.Id == Script.Id).FirstOrDefault();
+            s.title = Script.title;
+            s.description = Script.description;
+            s.type = Script.type;
+            
+            User user = _context.user.Where(u => u.username == Script.user.username).FirstOrDefault();
+            s.user = user;
 
+            foreach (Parameter p in Script.parameter_available)
+            {
+                ScriptParameter sp = _context.scriptParameter.Where(sp => sp.script.Id == Script.Id && sp.parameter.Id == p.Id).FirstOrDefault();
+                sp.implemented = false;
+            }
+
+            foreach (Parameter p in Script.parameter_implemented)
+            {
+                ScriptParameter sp = _context.scriptParameter.Where(sp => sp.script.Id == Script.Id && sp.parameter.Id == p.Id).FirstOrDefault();
+                sp.implemented = true;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return NoContent();
+        }
 
         // POST: api/Scripts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

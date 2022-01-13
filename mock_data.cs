@@ -16,9 +16,9 @@ namespace Neptune
             User user_1 = new User {username = "arne", display_name = "Arne Geiken", permissions = 1, archived = false, created = date, updated = date};
 
             Script script_a = new Script { archived = false, updated = date,
-             created = date, title = "script_a", description = "This is script_a"};
+             created = date, title = "script_a", description = "This is script_a", user = user_1, type = "JSON"};
             Script script_b = new Script { archived = false, updated = date,
-             created = date, title = "script_b", description = "This is script_b"};
+             created = date, title = "script_b", description = "This is script_b", user = user_1, type = "JSON"};
 
             Parameter param_1 = new Parameter { archived = false, updated = date,
              created = date, title = "param_a", description = "This is param_a" };
@@ -32,11 +32,11 @@ namespace Neptune
              created = date, title = "param_e", description = "This is param_e" };
 
             Option option_a = new Option { archived = false, updated = date,
-             created = date, title = "option_a", description = "This is option_a", datatype = 0  };
+             created = date, title = "option_a", description = "This is option_a", datatype = 0, value = "Hello"  };
             Option option_b = new Option { archived = false, updated = date,
-             created = date, title = "option_b", description = "This is option_b", datatype = 1 };
+             created = date, title = "option_b", description = "This is option_b", datatype = 1, value = "Hello" };
             Option option_c = new Option { archived = false, updated = date,
-             created = date, title = "option_c", description = "This is option_c", datatype = 2 };
+             created = date, title = "option_c", description = "This is option_c", datatype = 2 , value = "Hello"};
 
             param_1.options.Add(option_a);
             param_2.options.Add(option_a);
